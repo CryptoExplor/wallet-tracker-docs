@@ -16,34 +16,22 @@ Live at: `https://wallet-tracker-docs.vercel.app`
 ## Local Development
 
 ```bash
-# Install dependencies
 npm install
-
-# Start dev server (opens at http://localhost:5173)
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build locally
-npm run preview
+npm run dev       # http://localhost:5173
+npm run build     # production build → dist/
+npm run preview   # preview the build locally
 ```
 
 ## Deploy to Vercel
 
 1. Push this repo to GitHub
-2. Go to [vercel.com](https://vercel.com) → New Project
-3. Import your GitHub repo
-4. Build settings (auto-detected):
+2. Go to [vercel.com](https://vercel.com) → New Project → import repo
+3. Build settings (auto-detected):
    - **Build Command:** `npm run build`
    - **Output Directory:** `dist`
-5. Click **Deploy**
-
-Done. Vercel will give you a URL like `https://wallet-tracker-docs.vercel.app`.
+4. Click **Deploy**
 
 ## Store Listing URLs
-
-Use these in your Google Workspace Marketplace listing:
 
 ```
 Privacy Policy : https://wallet-tracker-docs.vercel.app/privacy.html
@@ -54,5 +42,11 @@ Support         : https://wallet-tracker-docs.vercel.app/support.html
 ## Stack
 
 - [Vite](https://vitejs.dev/) — build tool
-- Vanilla HTML + CSS — no framework needed for a static docs site
+- Vanilla HTML + CSS
+- [@vercel/analytics](https://vercel.com/docs/analytics) — page view tracking
 - [Vercel](https://vercel.com/) — hosting
+
+## Built by
+
+- [buildbyravi](https://github.com/buildbyravi)
+- [CryptoExplor](https://github.com/CryptoExplor)

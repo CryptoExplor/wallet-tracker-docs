@@ -11,7 +11,7 @@
   <header class="site-header">
     <div class="container">
       <h1>💼 Wallet Balance Tracker</h1>
-      <p class="tagline">Track crypto wallet balances directly in Google Sheets™</p>
+      <p class="tagline">Track native crypto wallet balances directly in Google Sheets™</p>
     </div>
   </header>
 
@@ -31,7 +31,7 @@
 
       <section>
         <h3>Overview</h3>
-        <p>Wallet Balance Tracker is a free Google Sheets™ add-on developed by antigravitylabs. It helps you track cryptocurrency wallet balances across EVM-compatible blockchains. This policy explains what data exists, where it lives, and what we do (and don't do) with it.</p>
+        <p>Wallet Balance Tracker is a free Google Sheets™ add-on developed by buildbyravi and CryptoExplor. It helps you track native cryptocurrency wallet balances across EVM-compatible blockchains. This policy explains what data exists, where it lives, and what we do (and don't do) with it.</p>
       </section>
 
       <section>
@@ -52,7 +52,7 @@
 
       <section>
         <h3>How your data is used</h3>
-        <p>The add-on operates entirely inside your Google Sheets™ environment:</p>
+        <p>The add-on operates entirely within your Google Sheets™ environment:</p>
         <ul>
           <li>Wallet addresses are sent only to the RPC endpoints <strong>you configure</strong>, to query public blockchain data</li>
           <li>Balance results are written back to your Sheet and nowhere else</li>
@@ -77,7 +77,7 @@
         <h3>Security</h3>
         <ul>
           <li>All network communication uses HTTPS</li>
-          <li>The add-on runs in your browser — no data passes through our servers</li>
+          <li>The add-on runs server-side via Google Apps Script — no data passes through our servers</li>
           <li>We cannot access your Sheets without your explicit permission grant</li>
         </ul>
         <div class="callout">
@@ -101,11 +101,6 @@
       </section>
 
       <section>
-        <h3>Open source</h3>
-        <p>The add-on code is publicly available. You can audit exactly what it does at: <a href="https://github.com/antigravitylabs/wallet-tracker-docs" target="_blank" rel="noopener">github.com/antigravitylabs/wallet-tracker-docs</a></p>
-      </section>
-
-      <section>
         <h3>Changes to this policy</h3>
         <p>Updates will be posted to this page. The "last updated" date at the top will change. Continued use after changes constitutes acceptance.</p>
       </section>
@@ -113,7 +108,8 @@
       <section>
         <h3>Contact</h3>
         <ul>
-          <li><strong>GitHub:</strong> <a href="https://github.com/antigravitylabs" target="_blank" rel="noopener">github.com/antigravitylabs</a></li>
+          <li><strong>GitHub:</strong> <a href="https://github.com/buildbyravi" target="_blank" rel="noopener">github.com/buildbyravi</a></li>
+          <li><strong>GitHub:</strong> <a href="https://github.com/CryptoExplor" target="_blank" rel="noopener">github.com/CryptoExplor</a></li>
           <li><strong>Email:</strong> <a href="mailto:ravikumar699121@gmail.com">ravikumar699121@gmail.com</a></li>
         </ul>
       </section>
@@ -122,10 +118,16 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Built by <a href="https://github.com/antigravitylabs" target="_blank" rel="noopener">antigravitylabs</a></p>
+      <p>
+        Built by
+        <a href="https://github.com/buildbyravi" target="_blank" rel="noopener">buildbyravi</a>
+        &amp;
+        <a href="https://github.com/CryptoExplor" target="_blank" rel="noopener">CryptoExplor</a>
+      </p>
       <p class="trademark">Google Sheets™ and Google Workspace™ are trademarks of Google LLC. This project is not affiliated with or endorsed by Google.</p>
     </div>
   </footer>
 
+  <script type="module" src="/src/analytics.js"></script>
 </body>
 </html>

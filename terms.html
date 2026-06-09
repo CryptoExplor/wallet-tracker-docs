@@ -11,7 +11,7 @@
   <header class="site-header">
     <div class="container">
       <h1>💼 Wallet Balance Tracker</h1>
-      <p class="tagline">Track crypto wallet balances directly in Google Sheets™</p>
+      <p class="tagline">Track native crypto wallet balances directly in Google Sheets™</p>
     </div>
   </header>
 
@@ -27,7 +27,7 @@
   <main>
     <div class="content-wrap">
       <h2>Terms of Service</h2>
-      <p class="meta">Last updated: January 2025</p>
+      <p class="meta">Last updated: June 8, 2026</p>
 
       <section>
         <h3>1. Agreement to Terms</h3>
@@ -36,11 +36,11 @@
 
       <section>
         <h3>2. What the Add-on does</h3>
-        <p>The Add-on is a free tool that tracks cryptocurrency wallet balances across EVM-compatible blockchains inside Google Sheets™. Specifically, it:</p>
+        <p>The Add-on is a free tool that fetches native coin balances across EVM-compatible blockchains directly inside Google Sheets™. Specifically, it:</p>
         <ul>
           <li>Queries public blockchain data via RPC endpoints you configure</li>
-          <li>Writes balance information to your Google Sheet</li>
-          <li>Operates entirely within your Google Sheets™ environment</li>
+          <li>Writes native coin balance information to your Google Sheet</li>
+          <li>Operates entirely within your Google Sheets™ environment via Google Apps Script</li>
           <li>Does not collect or store your data on any server we control</li>
         </ul>
       </section>
@@ -70,7 +70,7 @@
 
       <section>
         <h3>5. Intellectual property</h3>
-        <p>The Add-on is open source and available at: <a href="https://github.com/antigravitylabs/wallet-tracker-docs" target="_blank" rel="noopener">github.com/antigravitylabs/wallet-tracker-docs</a>. You may use, modify, and distribute the code according to the repository's license.</p>
+        <p>The Add-on and its source code are proprietary. All rights reserved by buildbyravi and CryptoExplor. You may not copy, modify, distribute, or reverse-engineer the Add-on without explicit written permission.</p>
       </section>
 
       <section>
@@ -107,7 +107,8 @@
       <section>
         <h3>11. Contact</h3>
         <ul>
-          <li><strong>GitHub:</strong> <a href="https://github.com/antigravitylabs" target="_blank" rel="noopener">github.com/antigravitylabs</a></li>
+          <li><strong>GitHub:</strong> <a href="https://github.com/buildbyravi" target="_blank" rel="noopener">github.com/buildbyravi</a></li>
+          <li><strong>GitHub:</strong> <a href="https://github.com/CryptoExplor" target="_blank" rel="noopener">github.com/CryptoExplor</a></li>
           <li><strong>Email:</strong> <a href="mailto:ravikumar699121@gmail.com">ravikumar699121@gmail.com</a></li>
         </ul>
       </section>
@@ -116,10 +117,16 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Built by <a href="https://github.com/antigravitylabs" target="_blank" rel="noopener">antigravitylabs</a></p>
+      <p>
+        Built by
+        <a href="https://github.com/buildbyravi" target="_blank" rel="noopener">buildbyravi</a>
+        &amp;
+        <a href="https://github.com/CryptoExplor" target="_blank" rel="noopener">CryptoExplor</a>
+      </p>
       <p class="trademark">Google Sheets™ and Google Workspace™ are trademarks of Google LLC. This project is not affiliated with or endorsed by Google.</p>
     </div>
   </footer>
 
+  <script type="module" src="/src/analytics.js"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@
   <header class="site-header">
     <div class="container">
       <h1>💼 Wallet Balance Tracker</h1>
-      <p class="tagline">Track crypto wallet balances directly in Google Sheets™</p>
+      <p class="tagline">Track native crypto wallet balances directly in Google Sheets™</p>
     </div>
   </header>
 
@@ -36,13 +36,25 @@
           <li>Go to <strong>Extensions → Add-ons → Get add-ons</strong></li>
           <li>Search for <strong>"Wallet Balance Tracker"</strong></li>
           <li>Click <strong>Install</strong> and grant permissions</li>
-          <li>Go to <strong>Extensions → Wallet Balance Tracker</strong> to open the panel</li>
-          <li>Configure your RPC endpoint and add wallet addresses</li>
-          <li>Click <strong>Fetch Balances</strong></li>
+          <li>A <strong>Balances</strong> menu will appear in the menu bar</li>
+          <li>Go to <strong>Balances → Setup / Create Dashboard</strong> — do this once</li>
+          <li>Open any wallet sheet, add wallet addresses in column B (row 3+)</li>
+          <li>Add a chain name in row 1 col C and its RPC URL in row 2 col C</li>
+          <li>Click <strong>Balances → Fetch ALL chains - this sheet</strong></li>
         </ol>
         <div class="callout">
           ⚠️ You only need <strong>public wallet addresses</strong> (starting with 0x). Never enter private keys or seed phrases.
         </div>
+      </section>
+
+      <section>
+        <h3>Sheet layout</h3>
+        <ul>
+          <li><strong>Row 1, col C+</strong> — chain name (e.g. "Ethereum")</li>
+          <li><strong>Row 2, col C+</strong> — RPC URL (e.g. <code>https://eth.llamarpc.com</code>)</li>
+          <li><strong>Row 3+, col B</strong> — wallet addresses (0x...)</li>
+        </ul>
+        <p>To add another chain: new column, row 1 = name, row 2 = RPC URL. That's it.</p>
       </section>
 
       <section>
@@ -53,15 +65,15 @@
           <li>Verify the RPC URL is correct and includes the full path (e.g. <code>https://mainnet.infura.io/v3/YOUR_KEY</code>)</li>
           <li>Check that the RPC provider is online — visit their status page</li>
           <li>Try a different provider: Infura, Alchemy, QuickNode, or a free public RPC</li>
-          <li>Make sure the RPC supports the chain you're querying (e.g. an Ethereum RPC won't work for Polygon)</li>
+          <li>Make sure the RPC supports the chain you're querying (an Ethereum RPC won't work for Polygon)</li>
         </ul>
 
         <h4>❌ "Balance not updating"</h4>
         <ul>
-          <li>Click the Refresh button to trigger a manual fetch</li>
-          <li>Check the wallet address format — it should start with <code>0x</code> and be 42 characters</li>
+          <li>Use <strong>Balances → Fetch ALL chains</strong> to trigger a manual fetch</li>
+          <li>Check the wallet address format — must start with <code>0x</code> and be exactly 42 characters</li>
           <li>Verify the wallet exists on the chain you're querying</li>
-          <li>Some free RPC tiers have rate limits — wait 10–30 seconds and try again</li>
+          <li>Free RPC tiers have rate limits — wait 10–30 seconds and retry</li>
         </ul>
 
         <h4>❌ "Wrong balance shown"</h4>
@@ -73,9 +85,14 @@
 
         <h4>❌ "Permission denied"</h4>
         <ul>
-          <li>Go to <strong>Extensions → Wallet Balance Tracker → Settings → Permissions</strong></li>
-          <li>Revoke and re-grant permissions</li>
+          <li>Revoke and re-grant permissions via <strong>Extensions → Add-ons → Manage add-ons</strong></li>
           <li>Sign out of Google and sign back in, then retry</li>
+        </ul>
+
+        <h4>❌ No "Balances" menu after install</h4>
+        <ul>
+          <li>Refresh the page — the menu appears after page reload post-install</li>
+          <li>Make sure the add-on is installed for your account, not just the sheet</li>
         </ul>
       </section>
 
@@ -83,22 +100,43 @@
         <h3>FAQ</h3>
 
         <h4>Is my data stored on your servers?</h4>
-        <p>No. Everything stays in your Google Sheet. We run no backend that receives your wallet addresses or balances. See the <a href="/privacy.html">Privacy Policy</a> for full details.</p>
+        <p>No. Everything stays in your Google Sheet. The add-on runs via Google Apps Script — no data passes through servers we control. See the <a href="/privacy.html">Privacy Policy</a> for full details.</p>
 
         <h4>Which blockchains are supported?</h4>
         <p>Any EVM-compatible chain with a public RPC endpoint — Ethereum, Polygon, BSC, Arbitrum, Optimism, Avalanche, Base, and more. You configure the RPC, so you control which chains you query.</p>
 
         <h4>Can I track multiple wallets?</h4>
-        <p>Yes. Add as many public wallet addresses as you need in your Sheet.</p>
+        <p>Yes. Add as many public wallet addresses as you need in column B from row 3 onwards.</p>
 
-        <h4>Can I track ERC-20 token balances?</h4>
-        <p>Yes — both native coin balances (ETH, MATIC, BNB, etc.) and ERC-20 token balances are supported.</p>
+        <h4>Can I track multiple chains?</h4>
+        <p>Yes. Each column from C onwards is one chain. Add as many columns as you need.</p>
+
+        <h4>What balances does this show?</h4>
+        <p>Native coin balances only — ETH on Ethereum, MATIC on Polygon, BNB on BSC, and so on. It does not fetch ERC-20 token balances.</p>
 
         <h4>Do I need a paid RPC plan?</h4>
         <p>No. Free tiers from Infura, Alchemy, or public RPCs work fine for personal use. Paid plans give you higher rate limits if you're tracking many wallets.</p>
 
         <h4>Is this add-on free?</h4>
-        <p>Yes, completely free. No subscription, no paywalls. It's also open source.</p>
+        <p>Yes, completely free. No subscription, no paywalls.</p>
+      </section>
+
+      <section>
+        <h3>Free RPC URLs</h3>
+        <p>Paste these directly into row 2 of any wallet sheet:</p>
+        <ul>
+          <li>Ethereum: <code>https://eth.llamarpc.com</code></li>
+          <li>Polygon: <code>https://polygon-rpc.com</code></li>
+          <li>BSC: <code>https://bsc-dataseed.binance.org</code></li>
+          <li>Arbitrum: <code>https://arb1.arbitrum.io/rpc</code></li>
+          <li>Optimism: <code>https://mainnet.optimism.io</code></li>
+          <li>Base: <code>https://mainnet.base.org</code></li>
+          <li>Avalanche: <code>https://api.avax.network/ext/bc/C/rpc</code></li>
+          <li>Sepolia testnet: <code>https://rpc.sepolia.org</code></li>
+        </ul>
+        <div class="callout">
+          💡 For 50+ wallets, use a keyed RPC from <a href="https://alchemy.com" target="_blank" rel="noopener">Alchemy</a> or <a href="https://infura.io" target="_blank" rel="noopener">Infura</a> to avoid rate limits.
+        </div>
       </section>
 
       <section>
@@ -111,20 +149,10 @@
           </div>
           <div class="support-card">
             <h4>🐛 GitHub Issues</h4>
-            <p><a href="https://github.com/antigravitylabs/wallet-tracker-docs/issues" target="_blank" rel="noopener">Open an issue</a></p>
+            <p><a href="https://github.com/buildbyravi/wallet-tracker-docs/issues" target="_blank" rel="noopener">Open an issue</a></p>
             <p class="note">For bugs and feature requests</p>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h3>Recommended RPC Providers</h3>
-        <ul>
-          <li><a href="https://infura.io" target="_blank" rel="noopener">Infura</a> — reliable, generous free tier</li>
-          <li><a href="https://alchemy.com" target="_blank" rel="noopener">Alchemy</a> — fast, good DX</li>
-          <li><a href="https://quicknode.com" target="_blank" rel="noopener">QuickNode</a> — multi-chain</li>
-          <li><a href="https://ankr.com" target="_blank" rel="noopener">Ankr</a> — free public endpoints available</li>
-        </ul>
       </section>
 
       <section>
@@ -135,6 +163,7 @@
           <li><a href="https://bscscan.com" target="_blank" rel="noopener">BscScan</a> — BSC</li>
           <li><a href="https://arbiscan.io" target="_blank" rel="noopener">Arbiscan</a> — Arbitrum</li>
           <li><a href="https://optimistic.etherscan.io" target="_blank" rel="noopener">Optimism Explorer</a> — Optimism</li>
+          <li><a href="https://basescan.org" target="_blank" rel="noopener">Basescan</a> — Base</li>
         </ul>
       </section>
 
@@ -151,10 +180,16 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Built by <a href="https://github.com/antigravitylabs" target="_blank" rel="noopener">antigravitylabs</a></p>
+      <p>
+        Built by
+        <a href="https://github.com/buildbyravi" target="_blank" rel="noopener">buildbyravi</a>
+        &amp;
+        <a href="https://github.com/CryptoExplor" target="_blank" rel="noopener">CryptoExplor</a>
+      </p>
       <p class="trademark">Google Sheets™ and Google Workspace™ are trademarks of Google LLC. This project is not affiliated with or endorsed by Google.</p>
     </div>
   </footer>
 
+  <script type="module" src="/src/analytics.js"></script>
 </body>
 </html>
