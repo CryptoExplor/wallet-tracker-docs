@@ -27,82 +27,84 @@
   <main>
     <div class="content-wrap">
       <h2>Privacy Policy</h2>
-      <p class="meta">Last updated: June 8, 2026</p>
+      <p class="meta">Last updated: June 12, 2026</p>
 
       <section>
         <h3>Overview</h3>
-        <p>Wallet Balance Tracker is a free Google Sheets™ add-on developed by buildbyravi and CryptoExplor. It helps you track native cryptocurrency wallet balances across EVM-compatible blockchains. This policy explains what data exists, where it lives, and what we do (and don't do) with it.</p>
+        <p>Wallet Balance Tracker is a free Google Sheets™ Apps Script library developed by buildbyravi and CryptoExplor. It helps you track native cryptocurrency wallet balances across EVM-compatible blockchains directly inside your own Google Sheet. This policy explains what data exists, where it lives, and what we do (and don't do) with it.</p>
       </section>
 
       <section>
         <h3>What we collect</h3>
         <h4>Information you provide</h4>
         <ul>
-          <li><strong>Wallet addresses</strong> — public addresses you enter into your Sheet</li>
-          <li><strong>RPC endpoint URLs</strong> — blockchain node URLs you configure</li>
+          <li><strong>Wallet addresses</strong> — public 0x addresses you enter into your Sheet</li>
+          <li><strong>RPC endpoint URLs</strong> — blockchain node URLs you configure in row 2</li>
         </ul>
         <h4>Information we do NOT collect</h4>
         <ul>
-          <li>Personal information (name, email, phone)</li>
-          <li>Private keys or seed phrases — we never ask for these</li>
-          <li>Usage analytics or tracking data</li>
+          <li>Personal information (name, email, phone number)</li>
+          <li>Private keys or seed phrases — we never ask for these, never</li>
+          <li>Usage analytics or behavioural tracking</li>
           <li>Cookies or browser fingerprints</li>
+          <li>Your Google account details</li>
         </ul>
       </section>
 
       <section>
         <h3>How your data is used</h3>
-        <p>The add-on operates entirely within your Google Sheets™ environment:</p>
+        <p>The library operates entirely within your Google Sheets™ environment via Google Apps Script running in your own Google account:</p>
         <ul>
-          <li>Wallet addresses are sent only to the RPC endpoints <strong>you configure</strong>, to query public blockchain data</li>
+          <li>Wallet addresses are sent only to the RPC endpoint <strong>you configure</strong> to query public blockchain balance data</li>
           <li>Balance results are written back to your Sheet and nowhere else</li>
-          <li>We operate no backend servers that receive or store your wallet data</li>
+          <li>We operate no backend servers that receive, log, or store your wallet data</li>
+          <li>Batch progress is saved temporarily in your sheet's Script Properties — cleared when the batch completes</li>
         </ul>
       </section>
 
       <section>
         <h3>Data storage</h3>
-        <p>All data lives in your Google Sheet. We have no database. Google's own <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> governs how Google handles your Sheets data.</p>
+        <p>All data lives in your Google Sheet and your Google account's Apps Script properties. We have no database. Google's own <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> governs how Google handles your Sheets and Apps Script data.</p>
       </section>
 
       <section>
         <h3>Third-party services</h3>
         <h4>RPC providers</h4>
-        <p>When you fetch balances, wallet addresses are sent to the blockchain node URL you configured (e.g. Infura, Alchemy, a public RPC). Each provider has its own privacy policy. Use reputable providers and review their terms before use.</p>
+        <p>When you fetch balances, wallet addresses are sent to the blockchain node URL you put in row 2 (e.g. Infura, Alchemy, a public RPC like llamarpc.com). Each provider has its own privacy policy. We recommend using reputable providers and reviewing their terms before use.</p>
         <h4>Google Services</h4>
-        <p>The add-on uses Google Workspace APIs. We request the minimum permissions required — read/write access to your current spreadsheet only.</p>
+        <p>The library uses Google Workspace APIs and runs under your Google account via Apps Script. We request the minimum permissions required — spreadsheet read/write and external HTTP requests to the RPC URL you configure.</p>
       </section>
 
       <section>
         <h3>Security</h3>
         <ul>
-          <li>All network communication uses HTTPS</li>
-          <li>The add-on runs server-side via Google Apps Script — no data passes through our servers</li>
-          <li>We cannot access your Sheets without your explicit permission grant</li>
+          <li>All RPC communication uses HTTPS</li>
+          <li>The library runs server-side via Google Apps Script inside your Google account — no data passes through our servers</li>
+          <li>We cannot access your Sheet or your wallet addresses at any time</li>
         </ul>
         <div class="callout">
-          ⚠️ <strong>Never enter private keys or seed phrases</strong> into your Sheet or anywhere in the add-on. The add-on only needs public wallet addresses.
+          ⚠️ <strong>Never enter private keys or seed phrases</strong> into your Sheet or anywhere in this tool. The library only needs public wallet addresses (0x…).
         </div>
       </section>
 
       <section>
         <h3>Your rights</h3>
         <ul>
-          <li><strong>Access</strong> — your data is in your Sheet, always visible to you</li>
-          <li><strong>Edit/delete</strong> — modify or remove any data in your Sheet at any time</li>
-          <li><strong>Uninstall</strong> — removing the add-on or deleting the Sheet removes all associated data</li>
-          <li><strong>Export</strong> — use Google Sheets' standard export features</li>
+          <li><strong>Access</strong> — your data is always in your own Google Sheet</li>
+          <li><strong>Edit / delete</strong> — modify or remove any data in your Sheet at any time</li>
+          <li><strong>Remove the library</strong> — unlink the library from Apps Script to stop all functionality</li>
+          <li><strong>Export</strong> — use Google Sheets' standard export (CSV, XLSX) at any time</li>
         </ul>
       </section>
 
       <section>
         <h3>Children's privacy</h3>
-        <p>The add-on is not directed at children under 13. We do not knowingly collect information from minors.</p>
+        <p>This tool is not directed at children under 13. We do not knowingly collect information from minors.</p>
       </section>
 
       <section>
         <h3>Changes to this policy</h3>
-        <p>Updates will be posted to this page. The "last updated" date at the top will change. Continued use after changes constitutes acceptance.</p>
+        <p>Updates will be posted to this page. The "last updated" date at the top will change. Continued use after changes constitutes acceptance of the updated policy.</p>
       </section>
 
       <section>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wallet Balance Tracker — Track Crypto in Google Sheets™</title>
-  <meta name="description" content="A free Google Sheets add-on to track native cryptocurrency wallet balances across Ethereum, Polygon, BSC, Arbitrum, and all EVM chains." />
+  <meta name="description" content="A free Google Sheets Apps Script library to track native cryptocurrency wallet balances across Ethereum, Polygon, BSC, Arbitrum, and all EVM chains. No API key needed." />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
@@ -29,10 +29,22 @@
 
     <section class="hero">
       <h2>Multi-chain wallet tracking,<br>right inside your spreadsheet</h2>
-      <p>A free Google Sheets™ add-on that fetches live native coin balances across Ethereum, Polygon, BSC, Arbitrum, Optimism, Avalanche, and any EVM chain.</p>
-      <a href="https://workspace.google.com/marketplace" class="btn-primary" target="_blank" rel="noopener">
-        Install from Marketplace →
-      </a>
+      <p>A free Google Sheets™ Apps Script library that fetches live native coin balances across Ethereum, Polygon, BSC, Arbitrum, Optimism, Avalanche, and any EVM chain. No API key required.</p>
+      <div class="hero-buttons">
+        <a href="https://docs.google.com/spreadsheets/d/11YwHYTmbF3H_wpLuxhgov8Bd1C6NJpkPHRivRFeWsCc/copy"
+           class="btn-primary" target="_blank" rel="noopener">
+          📋 Get a Copy — Google Sheets™ →
+        </a>
+        <a href="/support.html" class="btn-secondary">
+          Setup Guide →
+        </a>
+      </div>
+      <p class="hero-sub">
+        Library Script ID:
+        <code class="script-id" onclick="copyScriptId(this)" title="Click to copy">
+          1yM1l94RPOknc3QMz7l4eRnNRHRFR0vow0sIEmYBh22nZ_kUBbfreBee1
+        </code>
+      </p>
     </section>
 
     <section class="features">
@@ -42,7 +54,7 @@
           <div class="feature-card">
             <div class="icon">⛓️</div>
             <h4>All EVM Chains</h4>
-            <p>Ethereum, Polygon, BSC, Arbitrum, Optimism, Avalanche — if it has an RPC, it works.</p>
+            <p>Ethereum, Polygon, BSC, Arbitrum, Optimism, Avalanche — if it has an RPC URL, it works.</p>
           </div>
           <div class="feature-card">
             <div class="icon">🔒</div>
@@ -51,13 +63,13 @@
           </div>
           <div class="feature-card">
             <div class="icon">⚡</div>
-            <h4>Native Coin Balances</h4>
-            <p>Fetch up-to-date native coin balances (ETH, MATIC, BNB, etc.) on demand across multiple wallets.</p>
+            <h4>Batch Processing</h4>
+            <p>Fetches 100 wallets at a time automatically — no timeouts, no manual splitting.</p>
           </div>
           <div class="feature-card">
             <div class="icon">🆓</div>
             <h4>Free Forever</h4>
-            <p>No subscription, no paywalls, no hidden costs.</p>
+            <p>No subscription, no paywalls, no hidden costs. Use any RPC you choose.</p>
           </div>
         </div>
       </div>
@@ -65,33 +77,45 @@
 
     <section class="how-it-works">
       <div class="container">
-        <h3>How it works</h3>
+        <h3>How to set up</h3>
         <ol class="steps">
           <li>
             <div class="step-text">
-              <strong>Install the add-on</strong>
-              <p>Find "Wallet Balance Tracker" in the Google Workspace™ Marketplace and install.</p>
+              <strong>Get a copy of the Sheet</strong>
+              <p>Click the button above — it copies the Sheet and the script setup to your Google account.</p>
             </div>
           </li>
           <li>
             <div class="step-text">
-              <strong>Configure your RPC endpoint</strong>
-              <p>Paste in any public or private RPC URL — Infura, Alchemy, QuickNode, or your own node.</p>
+              <strong>Add the library</strong>
+              <p>Extensions → Apps Script → Libraries (+) → paste the Script ID → identifier = <code>WalletTracker</code> → Add.</p>
             </div>
           </li>
           <li>
             <div class="step-text">
-              <strong>Enter wallet addresses</strong>
-              <p>Add public wallet addresses (0x...) to your Sheet. Private keys are never needed.</p>
+              <strong>Configure your RPC and wallets</strong>
+              <p>Row 1 col C+ = chain name · Row 2 col C+ = RPC URL · Row 3+ col B = wallet addresses (0x…).</p>
             </div>
           </li>
           <li>
             <div class="step-text">
               <strong>Fetch balances</strong>
-              <p>Click Fetch — native coin balances appear in your Sheet, ready for formulas or charts.</p>
+              <p>Balances → Fetch ALL chains — this sheet. Done. Balances appear in seconds.</p>
             </div>
           </li>
         </ol>
+      </div>
+    </section>
+
+    <section class="library-id-section">
+      <div class="container">
+        <h3>Script Library ID</h3>
+        <p class="lib-desc">Add this library to any existing Google Sheets project to get the Balances menu.</p>
+        <div class="id-box">
+          <code id="libId">1yM1l94RPOknc3QMz7l4eRnNRHRFR0vow0sIEmYBh22nZ_kUBbfreBee1</code>
+          <button onclick="copyLibId()" class="copy-btn" id="copyBtn">Copy</button>
+        </div>
+        <p class="lib-note">After adding: set the identifier to <code>WalletTracker</code> — this is required.</p>
       </div>
     </section>
 
@@ -101,7 +125,7 @@
         <div class="link-grid">
           <a href="/privacy.html" class="doc-link">📄 Privacy Policy</a>
           <a href="/terms.html" class="doc-link">📋 Terms of Service</a>
-          <a href="/support.html" class="doc-link">🆘 Support</a>
+          <a href="/support.html" class="doc-link">🆘 Support &amp; Setup</a>
           <a href="https://github.com/buildbyravi" class="doc-link" target="_blank" rel="noopener">🔗 GitHub</a>
         </div>
       </div>
@@ -122,5 +146,26 @@
   </footer>
 
   <script type="module" src="/src/analytics.js"></script>
+  <script>
+    function copyScriptId(el) {
+      navigator.clipboard.writeText(el.textContent.trim()).then(function() {
+        var orig = el.textContent;
+        el.textContent = '✓ Copied!';
+        setTimeout(function() { el.textContent = orig; }, 1800);
+      });
+    }
+    function copyLibId() {
+      var id = document.getElementById('libId').textContent.trim();
+      var btn = document.getElementById('copyBtn');
+      navigator.clipboard.writeText(id).then(function() {
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1800);
+      });
+    }
+  </script>
 </body>
 </html>

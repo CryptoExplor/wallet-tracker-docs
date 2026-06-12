@@ -27,72 +27,116 @@
   <main>
     <div class="content-wrap">
       <h2>Support &amp; Help</h2>
-      <p class="meta">Last updated: June 8, 2026</p>
+      <p class="meta">Last updated: June 12, 2026</p>
 
       <section>
-        <h3>Quick Start</h3>
+        <h3>Quick Start — Option A (easiest)</h3>
         <ol>
-          <li>Open a Google Sheet</li>
-          <li>Go to <strong>Extensions → Add-ons → Get add-ons</strong></li>
-          <li>Search for <strong>"Wallet Balance Tracker"</strong></li>
-          <li>Click <strong>Install</strong> and grant permissions</li>
-          <li>A <strong>Balances</strong> menu will appear in the menu bar</li>
-          <li>Go to <strong>Balances → Setup / Create Dashboard</strong> — do this once</li>
-          <li>Open any wallet sheet, add wallet addresses in column B (row 3+)</li>
-          <li>Add a chain name in row 1 col C and its RPC URL in row 2 col C</li>
-          <li>Click <strong>Balances → Fetch ALL chains - this sheet</strong></li>
+          <li>Click <a href="https://docs.google.com/spreadsheets/d/11YwHYTmbF3H_wpLuxhgov8Bd1C6NJpkPHRivRFeWsCc/copy" target="_blank" rel="noopener"><strong>Make a Copy</strong></a> — the Sheet and script wrapper come with it</li>
+          <li>The library is already linked. Just refresh the sheet — the <strong>Balances</strong> menu appears</li>
+          <li>Go to <strong>Balances → Setup / Create Dashboard</strong> once</li>
+          <li>Add your wallets in col B (row 3+), chain name in row 1 col C, RPC URL in row 2 col C</li>
+          <li>Click <strong>Balances → Fetch ALL chains — this sheet</strong></li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Quick Start — Option B (add to existing sheet)</h3>
+        <ol>
+          <li>Open your Google Sheet → <strong>Extensions → Apps Script</strong></li>
+          <li>Left sidebar → <strong>Libraries +</strong> → paste Script ID:<br>
+            <code style="word-break:break-all;">1yM1l94RPOknc3QMz7l4eRnNRHRFR0vow0sIEmYBh22nZ_kUBbfreBee1</code>
+          </li>
+          <li>Click <strong>Look up</strong> → set Identifier to exactly <code>WalletTracker</code> → click <strong>Add</strong></li>
+          <li>Replace everything in <strong>Code.gs</strong> with this:
+<pre style="background:#f8f9fa;padding:1rem;border-radius:8px;font-size:13px;overflow-x:auto;margin-top:0.5rem;">function onOpen()               { WalletTracker.registerMenu(); }
+function onInstall()            { WalletTracker.registerMenu(); }
+function wt_fetchCurrentSheet() { WalletTracker.fetchCurrentSheetAllChains(); }
+function wt_fetchAllSheets()    { WalletTracker.fetchAllSheetsAllChains(); }
+function wt_fetchOneChain()     { WalletTracker.promptFetchOneChain(); }
+function wt_setupDashboard()    { WalletTracker.setupDashboard(); }
+function wt_addWalletSheet()    { WalletTracker.addWalletSheet(); }
+function wt_help()              { WalletTracker.showHelp(); }</pre>
+          </li>
+          <li>Press <strong>Ctrl+S</strong> → close the tab → refresh your sheet → <strong>Balances</strong> menu appears</li>
         </ol>
         <div class="callout">
-          ⚠️ You only need <strong>public wallet addresses</strong> (starting with 0x). Never enter private keys or seed phrases.
+          ⚠️ The identifier <strong>must</strong> be <code>WalletTracker</code> exactly — wrong capitalisation causes a ReferenceError.
         </div>
       </section>
 
       <section>
         <h3>Sheet layout</h3>
         <ul>
+          <li><strong>Col A, row 3+</strong> — Sr No (auto or manual)</li>
+          <li><strong>Col B, row 3+</strong> — wallet addresses (0x…, exactly 42 characters)</li>
           <li><strong>Row 1, col C+</strong> — chain name (e.g. "Ethereum")</li>
           <li><strong>Row 2, col C+</strong> — RPC URL (e.g. <code>https://eth.llamarpc.com</code>)</li>
-          <li><strong>Row 3+, col B</strong> — wallet addresses (0x...)</li>
         </ul>
-        <p>To add another chain: new column, row 1 = name, row 2 = RPC URL. That's it.</p>
+        <p>To add another chain: new column → row 1 = name, row 2 = RPC URL. That's it.</p>
+        <div class="callout">
+          ⚠️ You only need <strong>public wallet addresses</strong> (0x…). Never enter private keys or seed phrases.
+        </div>
+      </section>
+
+      <section>
+        <h3>Large wallet lists — batch mode</h3>
+        <p>Google Apps Script has a 6-minute execution limit. If you have more than ~150 wallets on a single chain, the script auto-splits into batches of 100 and saves progress. Here's how it works:</p>
+        <ul>
+          <li>Run <strong>Balances → Fetch ALL chains — this sheet</strong> as normal</li>
+          <li>After 100 wallets, it saves progress and shows a toast: <em>"Batch 1 done — run Fetch again to continue from row 103"</em></li>
+          <li>Run the same menu item again — it picks up exactly where it left off</li>
+          <li>Repeat until the toast says <em>"All wallets done"</em></li>
+          <li>Cells that haven't been fetched yet show <code>—</code> so you can see progress at a glance</li>
+        </ul>
+        <div class="callout">
+          💡 For 500+ wallets, use a private RPC key from <a href="https://alchemy.com" target="_blank" rel="noopener">Alchemy</a> or <a href="https://infura.io" target="_blank" rel="noopener">Infura</a> — public nodes rate-limit heavy traffic.
+        </div>
       </section>
 
       <section>
         <h3>Common Issues</h3>
 
-        <h4>❌ "Cannot connect to RPC endpoint"</h4>
+        <h4>❌ ReferenceError: WalletTracker is not defined</h4>
         <ul>
-          <li>Verify the RPC URL is correct and includes the full path (e.g. <code>https://mainnet.infura.io/v3/YOUR_KEY</code>)</li>
-          <li>Check that the RPC provider is online — visit their status page</li>
-          <li>Try a different provider: Infura, Alchemy, QuickNode, or a free public RPC</li>
-          <li>Make sure the RPC supports the chain you're querying (an Ethereum RPC won't work for Polygon)</li>
+          <li>The library isn't linked yet — go to <strong>Libraries +</strong> and add it first</li>
+          <li>Check the identifier is exactly <code>WalletTracker</code> (not <code>WALLETBALANCETRACKER</code> or anything else)</li>
+          <li>Click the library name in the sidebar → change Identifier → Save</li>
         </ul>
 
-        <h4>❌ "Balance not updating"</h4>
+        <h4>❌ "Cannot connect to RPC endpoint" / RPC error in cell</h4>
         <ul>
-          <li>Use <strong>Balances → Fetch ALL chains</strong> to trigger a manual fetch</li>
-          <li>Check the wallet address format — must start with <code>0x</code> and be exactly 42 characters</li>
-          <li>Verify the wallet exists on the chain you're querying</li>
-          <li>Free RPC tiers have rate limits — wait 10–30 seconds and retry</li>
+          <li>Check the URL in row 2 is correct and starts with <code>https://</code></li>
+          <li>The RPC provider may be down — check their status page</li>
+          <li>Try a different provider: <a href="https://alchemy.com" target="_blank" rel="noopener">Alchemy</a>, <a href="https://infura.io" target="_blank" rel="noopener">Infura</a>, <a href="https://drpc.org" target="_blank" rel="noopener">dRPC</a></li>
+          <li>Make sure the RPC matches the chain — an Ethereum RPC won't work for Polygon</li>
         </ul>
 
-        <h4>❌ "Wrong balance shown"</h4>
+        <h4>❌ Balance not updating</h4>
         <ul>
-          <li>Confirm you're querying the right network (mainnet vs testnet)</li>
+          <li>Run <strong>Balances → Fetch ALL chains — this sheet</strong> manually</li>
+          <li>Wallet address must start with <code>0x</code> and be exactly 42 characters</li>
+          <li>Free public RPCs rate-limit — wait 30 seconds and retry, or use a private key</li>
+        </ul>
+
+        <h4>❌ Wrong balance shown</h4>
+        <ul>
+          <li>Check you're on mainnet not testnet (or vice versa)</li>
           <li>RPC nodes can lag — try a different provider</li>
-          <li>Always verify on a blockchain explorer: <a href="https://etherscan.io" target="_blank" rel="noopener">Etherscan</a>, <a href="https://polygonscan.com" target="_blank" rel="noopener">Polygonscan</a>, etc.</li>
+          <li>Always verify on a blockchain explorer independently</li>
         </ul>
 
-        <h4>❌ "Permission denied"</h4>
+        <h4>❌ No "Balances" menu</h4>
         <ul>
-          <li>Revoke and re-grant permissions via <strong>Extensions → Add-ons → Manage add-ons</strong></li>
-          <li>Sign out of Google and sign back in, then retry</li>
+          <li>Refresh the sheet — the menu only appears after a full page reload</li>
+          <li>Check Apps Script → Code.gs has the 8 wrapper functions pasted in</li>
+          <li>Run <code>onOpen</code> manually from the Apps Script editor once</li>
         </ul>
 
-        <h4>❌ No "Balances" menu after install</h4>
+        <h4>❌ Script times out on large lists</h4>
         <ul>
-          <li>Refresh the page — the menu appears after page reload post-install</li>
-          <li>Make sure the add-on is installed for your account, not just the sheet</li>
+          <li>This is expected above ~150 wallets — batch mode handles it automatically</li>
+          <li>Just re-run <strong>Fetch ALL chains — this sheet</strong> and it resumes from where it stopped</li>
         </ul>
       </section>
 
@@ -100,32 +144,33 @@
         <h3>FAQ</h3>
 
         <h4>Is my data stored on your servers?</h4>
-        <p>No. Everything stays in your Google Sheet. The add-on runs via Google Apps Script — no data passes through servers we control. See the <a href="/privacy.html">Privacy Policy</a> for full details.</p>
+        <p>No. Everything stays in your Google Sheet. The library runs via Google Apps Script inside your own Google account — no data passes through any server we control.</p>
 
         <h4>Which blockchains are supported?</h4>
-        <p>Any EVM-compatible chain with a public RPC endpoint — Ethereum, Polygon, BSC, Arbitrum, Optimism, Avalanche, Base, and more. You configure the RPC, so you control which chains you query.</p>
+        <p>Any EVM-compatible chain with a public RPC — Ethereum, Polygon, BSC, Arbitrum, Optimism, Avalanche, Base, and hundreds more. You configure the RPC, so you control which chains you query.</p>
 
         <h4>Can I track multiple wallets?</h4>
-        <p>Yes. Add as many public wallet addresses as you need in column B from row 3 onwards.</p>
+        <p>Yes. Add as many public addresses as you need in column B from row 3 onwards. Batch mode handles lists of any size.</p>
 
         <h4>Can I track multiple chains?</h4>
         <p>Yes. Each column from C onwards is one chain. Add as many columns as you need.</p>
 
-        <h4>What balances does this show?</h4>
-        <p>Native coin balances only — ETH on Ethereum, MATIC on Polygon, BNB on BSC, and so on. It does not fetch ERC-20 token balances.</p>
+        <h4>What balances does it show?</h4>
+        <p>Native coin balances — ETH on Ethereum, MATIC on Polygon, BNB on BSC, etc. ERC-20 token balances are not currently supported.</p>
 
-        <h4>Do I need a paid RPC plan?</h4>
-        <p>No. Free tiers from Infura, Alchemy, or public RPCs work fine for personal use. Paid plans give you higher rate limits if you're tracking many wallets.</p>
+        <h4>Do I need a paid RPC?</h4>
+        <p>No. Free tiers and public RPCs work fine for personal use. For 100+ wallets or frequent refreshes, a free Alchemy or Infura account gives you higher rate limits.</p>
 
-        <h4>Is this add-on free?</h4>
-        <p>Yes, completely free. No subscription, no paywalls.</p>
+        <h4>Is this free?</h4>
+        <p>Yes, completely free. No subscription, no paywalls, no hidden costs.</p>
       </section>
 
       <section>
         <h3>Free RPC URLs</h3>
-        <p>Paste these directly into row 2 of any wallet sheet:</p>
+        <p>Paste any of these into row 2 of a wallet sheet:</p>
         <ul>
           <li>Ethereum: <code>https://eth.llamarpc.com</code></li>
+          <li>Ethereum: <code>https://eth.drpc.org</code></li>
           <li>Polygon: <code>https://polygon-rpc.com</code></li>
           <li>BSC: <code>https://bsc-dataseed.binance.org</code></li>
           <li>Arbitrum: <code>https://arb1.arbitrum.io/rpc</code></li>
@@ -134,9 +179,7 @@
           <li>Avalanche: <code>https://api.avax.network/ext/bc/C/rpc</code></li>
           <li>Sepolia testnet: <code>https://rpc.sepolia.org</code></li>
         </ul>
-        <div class="callout">
-          💡 For 50+ wallets, use a keyed RPC from <a href="https://alchemy.com" target="_blank" rel="noopener">Alchemy</a> or <a href="https://infura.io" target="_blank" rel="noopener">Infura</a> to avoid rate limits.
-        </div>
+        <p>More chains: <a href="https://chainlist.org" target="_blank" rel="noopener">chainlist.org</a> — search any chain and copy the RPC URL directly.</p>
       </section>
 
       <section>
@@ -150,31 +193,34 @@
           <div class="support-card">
             <h4>🐛 GitHub Issues</h4>
             <p><a href="https://github.com/buildbyravi/wallet-tracker-docs/issues" target="_blank" rel="noopener">Open an issue</a></p>
-            <p class="note">For bugs and feature requests</p>
+            <p class="note">Bugs and feature requests</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h3>Blockchain Explorers (for verification)</h3>
+        <h3>Blockchain Explorers</h3>
         <ul>
           <li><a href="https://etherscan.io" target="_blank" rel="noopener">Etherscan</a> — Ethereum</li>
           <li><a href="https://polygonscan.com" target="_blank" rel="noopener">Polygonscan</a> — Polygon</li>
           <li><a href="https://bscscan.com" target="_blank" rel="noopener">BscScan</a> — BSC</li>
           <li><a href="https://arbiscan.io" target="_blank" rel="noopener">Arbiscan</a> — Arbitrum</li>
-          <li><a href="https://optimistic.etherscan.io" target="_blank" rel="noopener">Optimism Explorer</a> — Optimism</li>
+          <li><a href="https://optimistic.etherscan.io" target="_blank" rel="noopener">Optimism Explorer</a></li>
           <li><a href="https://basescan.org" target="_blank" rel="noopener">Basescan</a> — Base</li>
         </ul>
       </section>
 
       <section>
-        <h3>Uninstalling</h3>
+        <h3>Removing the library</h3>
         <ol>
-          <li>Open your Google Sheet</li>
-          <li>Go to <strong>Extensions → Add-ons → Manage add-ons</strong></li>
-          <li>Find "Wallet Balance Tracker" and click <strong>Manage → Remove</strong></li>
+          <li>Open your Google Sheet → <strong>Extensions → Apps Script</strong></li>
+          <li>Left sidebar → <strong>Libraries</strong> → click <strong>WalletTracker</strong></li>
+          <li>Click <strong>Remove</strong></li>
+          <li>Delete the 8 wrapper functions from your Code.gs</li>
+          <li>Save — the Balances menu disappears on next reload</li>
         </ol>
       </section>
+
     </div>
   </main>
 
