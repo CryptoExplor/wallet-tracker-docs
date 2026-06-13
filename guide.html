@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup Guide — Wallet Balance Tracker</title>
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    /* ── Guide-page extras ─────────────────────────────────────── */
+
+    .guide-hero {
+      background: linear-gradient(135deg, #e8f0fe 0%, #f0f7ff 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 24px 2.5rem;
+      text-align: center;
+    }
+    .guide-hero .badge {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+    }
+    .guide-hero h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+    .guide-hero p {
+      color: var(--text-light);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto 1.5rem;
+    }
+    .time-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    /* ── Path chooser ──────────────────────────────────────────── */
+    .path-section {
+      padding: 3rem 24px 1rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .path-section h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.4rem;
+    }
+    .path-section .sub {
+      text-align: center;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+    .path-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .path-card {
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.22s;
+      background: white;
+      display: block;
+    }
+    .path-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      text-decoration: none;
+    }
+    .path-card .path-icon { font-size: 2.25rem; margin-bottom: 0.75rem; }
+    .path-card .path-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 0.6rem;
+    }
+    .path-card.recommended .path-tag { background: #e6f4ea; color: #137333; }
+    .path-card.advanced .path-tag   { background: var(--primary-light); color: var(--primary-dark); }
+    .path-card h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .path-card p  { font-size: 0.9rem; color: var(--text-light); margin: 0; line-height: 1.5; }
+    .path-card .arrow {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* ── Progress bar ──────────────────────────────────────────── */
+    .progress-strip {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      padding: 0 24px;
+    }
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+    }
+    .progress-step .dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-gray);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-light);
+      z-index: 1;
+    }
+    .progress-step.done .dot  { background: var(--green); border-color: var(--green); color: white; }
+    .progress-step.active .dot { background: var(--primary); border-color: var(--primary); color: white; }
+    .progress-step .label { font-size: 0.7rem; color: var(--text-light); text-align: center; white-space: nowrap; }
+    .progress-step.active .label { color: var(--primary); font-weight: 600; }
+    .progress-line { flex: 1; height: 2px; background: var(--border); margin: 0 -2px; margin-top: -18px; }
+
+    /* ── Step blocks ───────────────────────────────────────────── */
+    .guide-section {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 24px 4rem;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 3rem 0 1.5rem;
+    }
+    .section-heading .pill {
+      background: var(--primary);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .section-heading h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .divider { border: none; border-top: 2px dashed var(--border); margin: 3rem 0 1rem; }
+
+    .step-block {
+      display: flex;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem 1.5rem;
+      align-items: flex-start;
+      transition: box-shadow 0.2s;
+    }
+    .step-block:hover { box-shadow: var(--shadow-sm); }
+    .step-num {
+      width: 38px;
+      min-width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-top: 2px;
+    }
+    .step-body { flex: 1; }
+    .step-body strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      color: var(--text);
+    }
+    .step-body p {
+      color: var(--text-light);
+      font-size: 0.92rem;
+      margin: 0 0 0.5rem;
+      line-height: 1.55;
+    }
+    .step-body p:last-child { margin-bottom: 0; }
+    .step-body code {
+      font-size: 0.82rem;
+      background: var(--bg-gray);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      word-break: break-all;
+    }
+    .step-body .sub-list {
+      list-style: disc;
+      padding-left: 1.25rem;
+      margin: 0.5rem 0 0;
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+    .step-body .sub-list li { margin-bottom: 0.25rem; }
+    .step-body .sub-list code { font-size: 0.8rem; }
+    .step-body .mini-btn {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border: 1px solid #c5d8fb;
+      padding: 3px 10px;
+      border-radius: 5px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-family: inherit;
+    }
+    .success-step .step-num { background: var(--green); }
+
+    /* ── Callout variants ──────────────────────────────────────── */
+    .callout { background:#fef9e7; border-left:4px solid #f39c12; border-radius:0 8px 8px 0; padding:1rem 1.25rem; margin:0.75rem 0; font-size:0.9rem; line-height: 1.55; }
+    .callout-tip  { background:#e6f4ea; border-left-color: var(--green); }
+    .callout-info { background: var(--primary-light); border-left-color: var(--primary); }
+
+    /* ── Jargon buster ─────────────────────────────────────────── */
+    .jargon-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .jargon-card {
+      background: var(--bg-gray);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+    }
+    .jargon-card .term {
+      font-family: monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.3rem;
+    }
+    .jargon-card p { font-size: 0.875rem; color: var(--text-light); margin: 0; line-height: 1.5; }
+
+    /* ── Success banner ────────────────────────────────────────── */
+    .success-banner {
+      background: linear-gradient(135deg, #e6f4ea 0%, #d2f1df 100%);
+      border: 1px solid #a8d5b5;
+      border-radius: 14px;
+      padding: 1.75rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .success-banner .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .success-banner h4 { font-size: 1.15rem; font-weight: 700; color: #137333; margin-bottom: 0.4rem; }
+    .success-banner p { color: #1e6d3c; font-size: 0.9rem; margin: 0; }
+
+    /* ── Next steps tiles ──────────────────────────────────────── */
+    .next-tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .next-tile {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .next-tile:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: var(--text);
+    }
+    .next-tile .t-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .next-tile strong { display: block; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .next-tile p { font-size: 0.82rem; color: var(--text-light); margin: 0; }
+
+    /* ── Pre block inside step ─────────────────────────────────── */
+    .code-block {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: monospace;
+      font-size: 0.78rem;
+      overflow-x: auto;
+      margin-top: 0.75rem;
+      line-height: 1.7;
+      white-space: pre;
+    }
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .path-cards { grid-template-columns: 1fr; }
+      .jargon-grid { grid-template-columns: 1fr; }
+      .guide-hero h2 { font-size: 1.5rem; }
+      .progress-strip { display: none; }
+      .section-heading { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <h1>💼 Wallet Balance Tracker</h1>
+      <p class="tagline">Track native crypto wallet balances directly in Google Sheets™</p>
+    </div>
+  </header>
+
+  <nav class="site-nav">
+    <div class="container">
+      <a href="/">Home</a>
+      <a href="/guide.html" class="active">📖 Setup Guide</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
+      <a href="/support.html">Support</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ── Hero ──────────────────────────────────────────────── -->
+    <div class="guide-hero">
+      <div class="badge">Start here</div>
+      <h2>Set up in under 5 minutes</h2>
+      <p>Follow the steps below to start tracking your crypto wallet balances inside Google Sheets™. No coding knowledge needed.</p>
+      <div class="time-chip">⏱️ Takes about 3 – 5 minutes</div>
+    </div>
+
+    <!-- ── Choose your path ───────────────────────────────────── -->
+    <div class="path-section">
+      <h3>First: pick your starting point</h3>
+      <p class="sub">Choose the option that fits your situation. Most people should pick Option A.</p>
+      <div class="path-cards">
+        <a href="#option-a" class="path-card recommended">
+          <div class="path-icon">📋</div>
+          <span class="path-tag">✅ Recommended</span>
+          <h4>Option A — Give me the Sheet</h4>
+          <p>Copies a ready-made Google Sheet to your account. Everything is already wired up — just open it and go.</p>
+          <span class="arrow">Jump to Option A →</span>
+        </a>
+        <a href="#option-b" class="path-card advanced">
+          <div class="path-icon">🔧</div>
+          <span class="path-tag">Advanced</span>
+          <h4>Option B — Add to my existing Sheet</h4>
+          <p>You already have a Google Sheet and want to add wallet tracking to it. Requires a few extra steps in Apps Script.</p>
+          <span class="arrow">Jump to Option B →</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── Jargon buster ──────────────────────────────────────── -->
+    <div class="guide-section">
+      <div class="callout callout-info">
+        💡 <strong>Not sure what some words mean?</strong> Check the quick glossary below before you start — it explains the only three things you need to know.
+      </div>
+      <div class="jargon-grid">
+        <div class="jargon-card">
+          <div class="term">Wallet address (0x…)</div>
+          <p>Your <strong>public</strong> crypto address — safe to share, looks like <code>0xAbc…1234</code>. This is the only thing you paste into the Sheet. <strong>Never paste your private key or seed phrase.</strong></p>
+        </div>
+        <div class="jargon-card">
+          <div class="term">RPC URL</div>
+          <p>A free web address that lets the Sheet talk to the blockchain and read balances. Think of it as a phone number for the network. Free URLs are listed later on this page.</p>
+        </div>
+        <div class="jargon-card">
+          <div class="term">Apps Script</div>
+          <p>Google's built-in scripting tool hidden inside Google Sheets. You only need it for Option B — for Option A it's already set up inside the copied Sheet.</p>
+        </div>
+        <div class="jargon-card">
+          <div class="term">EVM chain</div>
+          <p>Any blockchain compatible with Ethereum (Ethereum, Polygon, BSC, Arbitrum, Optimism, Base…). If it has an RPC URL, this tracker works with it.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" style="max-width:780px;margin:0 auto 0;">
+
+    <!-- ══════════════════════════════════════════════════════════
+         OPTION A
+    ═══════════════════════════════════════════════════════════ -->
+    <div class="guide-section" id="option-a">
+
+      <div class="section-heading">
+        <span class="pill">Option A</span>
+        <h3>Copy the Sheet &amp; go</h3>
+      </div>
+
+      <!-- Progress strip for Option A -->
+      <div class="progress-strip" style="margin-bottom:2rem;">
+        <div class="progress-step active">
+          <div class="dot">1</div>
+          <div class="label">Copy Sheet</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="dot">2</div>
+          <div class="label">Dashboard</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="dot">3</div>
+          <div class="label">Chain sheet</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="dot">4</div>
+          <div class="label">RPC + wallets</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="dot">5</div>
+          <div class="label">Fetch 🎉</div>
+        </div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step-block">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Make a copy of the Sheet</strong>
+          <p>Click the button below. Google will ask you to sign in and then copy the Sheet into your own Google Drive. You are not sharing anything with us — it's just a copy.</p>
+          <p>
+            <a href="https://docs.google.com/spreadsheets/d/11YwHYTmbF3H_wpLuxhgov8Bd1C6NJpkPHRivRFeWsCc/copy"
+               target="_blank" rel="noopener" class="btn-primary" style="font-size:0.9rem;padding:0.6rem 1.4rem;display:inline-block;margin-top:0.4rem;">
+              📋 Make a Copy — Google Sheets™ →
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-block">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Open the copy &amp; wait for the menu</strong>
+          <p>After Google opens the copied Sheet, wait 5–10 seconds. A menu called <span class="mini-btn">⚡ Balances</span> should appear in the top menu bar next to "Help".</p>
+          <p>If you don't see it after 10 seconds, do a full page refresh (<strong>Ctrl+R</strong> / <strong>Cmd+R</strong>).</p>
+          <div class="callout">
+            ⚠️ The first time you run any Balances menu item, Google will ask you to <strong>Authorize</strong> the script. Click <em>Review permissions → your account → Allow</em>. This is normal — Google just wants you to confirm you trust the script in your own account.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-block">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Run Setup / Create Dashboard</strong>
+          <p>Click <span class="mini-btn">⚡ Balances</span> → <strong>Setup / Create Dashboard</strong>. This creates a PORTFOLIO summary sheet. You only need to do this once.</p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-block">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Add a chain sheet for each blockchain you use</strong>
+          <p>Click <span class="mini-btn">⚡ Balances</span> → <strong>Add chain sheet</strong> → type a name like <code>Ethereum</code> or <code>Polygon</code> → press OK.</p>
+          <p>Repeat this for every chain you want to track. Each chain gets its own sheet tab.</p>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step-block">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>Add your RPC URL in cell B2</strong>
+          <p>Click on the new chain sheet tab. Click on cell <strong>B2</strong> and paste the RPC URL for that chain. Copy one from the list below:</p>
+          <ul class="sub-list">
+            <li>Ethereum → <code>https://eth.llamarpc.com</code></li>
+            <li>Polygon &nbsp;&nbsp;→ <code>https://polygon-rpc.com</code></li>
+            <li>BSC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <code>https://bsc-dataseed.binance.org</code></li>
+            <li>Arbitrum → <code>https://arb1.arbitrum.io/rpc</code></li>
+            <li>Optimism → <code>https://mainnet.optimism.io</code></li>
+            <li>Base &nbsp;&nbsp;&nbsp;&nbsp;→ <code>https://mainnet.base.org</code></li>
+          </ul>
+          <p style="margin-top:0.6rem;">More chains at <a href="https://chainlist.org" target="_blank" rel="noopener">chainlist.org</a> — search the network name and copy any RPC URL listed there.</p>
+          <div class="callout callout-tip">
+            💡 <strong>B2 is just one cell</strong> — it is in column B (second column), row 2. Click that cell, paste the URL, press Enter.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="step-block">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <strong>Set a coin name in row 1 (column C)</strong>
+          <p>Click cell <strong>C1</strong> and type the coin ticker for this chain — for example <code>ETH</code>, <code>POL</code>, or <code>BNB</code>. Leave <strong>C2</strong> blank (blank = native coin balance).</p>
+          <p>That's all the column needs. You can add more token columns later using the menu.</p>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="step-block">
+        <div class="step-num">7</div>
+        <div class="step-body">
+          <strong>Paste your wallet addresses in column B, starting at row 3</strong>
+          <p>Each public wallet address goes in its own cell in column B. Start at <strong>B3</strong> and go down. Addresses start with <code>0x</code> and are 42 characters long.</p>
+          <div class="callout">
+            ⚠️ Only enter your <strong>public wallet address</strong> (starts with 0x). Never paste a private key or seed phrase into any cell.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 8 — success step -->
+      <div class="step-block success-step">
+        <div class="step-num">🎉</div>
+        <div class="step-body">
+          <strong>Fetch your balances!</strong>
+          <p>Click <span class="mini-btn">⚡ Balances</span> → <strong>Fetch this sheet</strong>. Within a few seconds, live balances will appear in column C beside each wallet address.</p>
+          <p>Run the same menu item any time you want updated numbers.</p>
+        </div>
+      </div>
+
+      <div class="success-banner">
+        <div class="icon">🏆</div>
+        <h4>You're all set for Option A!</h4>
+        <p>You can now track balances across multiple wallets and chains. See the "What's next?" section below.</p>
+      </div>
+
+    </div>
+
+    <hr class="divider" style="max-width:780px;margin:0 auto 0;">
+
+    <!-- ══════════════════════════════════════════════════════════
+         OPTION B
+    ═══════════════════════════════════════════════════════════ -->
+    <div class="guide-section" id="option-b">
+
+      <div class="section-heading">
+        <span class="pill">Option B</span>
+        <h3>Add to your existing Sheet</h3>
+      </div>
+
+      <div class="callout callout-info">
+        ℹ️ This path requires opening <strong>Apps Script</strong> (Google's built-in editor). It takes about 5 minutes. If that sounds daunting, go back and use <a href="#option-a">Option A</a> instead.
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step-block">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Open your Google Sheet</strong>
+          <p>Open the Sheet where you want to add wallet tracking.</p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-block">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Open Apps Script</strong>
+          <p>In the top menu: <strong>Extensions</strong> → <strong>Apps Script</strong>. A new browser tab will open showing a code editor.</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-block">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Add the WalletTracker library</strong>
+          <p>In the left sidebar, click the <strong>+</strong> next to <em>Libraries</em>.</p>
+          <p>Paste this Script ID into the box that appears:</p>
+          <p><code>1yM1l94RPOknc3QMz7l4eRnNRHRFR0vow0sIEmYBh22nZ_kUBbfreBee1</code></p>
+          <p>Click <strong>Look up</strong>. Set the <strong>Identifier</strong> field to exactly <code>WalletTracker</code> (capital W, capital T). Click <strong>Add</strong>.</p>
+          <div class="callout">
+            ⚠️ The identifier <strong>must</strong> be <code>WalletTracker</code> with that exact capitalisation. Typing it differently causes a ReferenceError and nothing will work.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-block">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Replace Code.gs with the wrapper functions</strong>
+          <p>Click <strong>Code.gs</strong> in the left sidebar. Select all the existing code (Ctrl+A / Cmd+A) and delete it. Then paste the entire block below:</p>
+          <div class="code-block">function onOpen()                { WalletTracker.registerMenu(); }
+function onInstall()             { WalletTracker.registerMenu(); }
+function wt_fetchCurrentSheet()  { WalletTracker.fetchCurrentSheetAllChains(); }
+function wt_fetchAllSheets()     { WalletTracker.fetchAllSheetsAllChains(); }
+function wt_fetchOneChain()      { WalletTracker.promptFetchOneChain(); }
+function wt_startAutoFetch()     { WalletTracker.startAutoFetch(); }
+function wt_stopAutoFetch()      { WalletTracker.stopAutoFetch(); }
+function wt_triggerFetch()       { WalletTracker.triggerFetch(); }
+function wt_setupDashboard()     { WalletTracker.setupDashboard(); }
+function wt_addWalletSheet()     { WalletTracker.addWalletSheet(); }
+function wt_addTokenColumn()     { WalletTracker.addTokenColumn(); }
+function wt_clearDecimalsCache() { WalletTracker.clearDecimalsCache(); }
+function wt_setFallbackRpc()     { WalletTracker.setFallbackRpc(); }
+function wt_refreshPortfolio()   { WalletTracker.refreshDashboardSummary(); }
+function wt_clearAllCache()      { WalletTracker.clearAllCache(); }
+function wt_help()               { WalletTracker.showHelp(); }</div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step-block">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>Save and close Apps Script</strong>
+          <p>Press <strong>Ctrl+S</strong> (Windows) or <strong>Cmd+S</strong> (Mac) to save. Then close the Apps Script tab and go back to your Sheet.</p>
+          <p>Do a full page refresh (<strong>Ctrl+R</strong> / <strong>Cmd+R</strong>). The <span class="mini-btn">⚡ Balances</span> menu should now appear in the menu bar.</p>
+        </div>
+      </div>
+
+      <!-- Step 6 — continue with A -->
+      <div class="step-block success-step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <strong>Continue with Option A steps 3 – 7</strong>
+          <p>Your Sheet is now wired up. Follow <a href="#option-a">Option A steps 3 – 8</a> above to run Setup, add a chain sheet, paste your RPC URL and wallet addresses, and fetch your first balances.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         WHAT'S NEXT
+    ═══════════════════════════════════════════════════════════ -->
+    <div class="guide-section" id="whats-next">
+      <hr class="divider" style="margin: 0 0 2.5rem;">
+      <h3 style="font-size:1.35rem;font-weight:700;margin-bottom:0.5rem;">What's next?</h3>
+      <p style="color:var(--text-light);margin-bottom:1.25rem;">Once your first balances are showing, here are some things you can do:</p>
+      <div class="next-tiles">
+        <div class="next-tile">
+          <div class="t-icon">🪙</div>
+          <strong>Track ERC-20 tokens</strong>
+          <p>Use ⚡ Balances → Add ERC-20 token to track USDC, USDT, WETH and more.</p>
+        </div>
+        <div class="next-tile">
+          <div class="t-icon">📊</div>
+          <strong>Portfolio summary</strong>
+          <p>Run ⚡ Balances → Refresh Portfolio for a SUMIF total across all chains.</p>
+        </div>
+        <div class="next-tile">
+          <div class="t-icon">🔁</div>
+          <strong>Auto-fetch 500+ wallets</strong>
+          <p>Use ⚡ Balances → Start auto-fetch to run in the background every minute.</p>
+        </div>
+        <div class="next-tile">
+          <div class="t-icon">📡</div>
+          <strong>Add a fallback RPC</strong>
+          <p>Set a backup RPC so balances keep fetching even if your main provider has issues.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-tip" style="margin-top:2rem;">
+        💡 <strong>Hover any balance cell</strong> after fetching to see a tooltip showing how much the balance changed since the last run — great for spotting wallet activity at a glance.
+      </div>
+
+      <div style="margin-top:2rem;text-align:center;">
+        <p style="color:var(--text-light);margin-bottom:1rem;">Something not working? The support page has fixes for every common error.</p>
+        <a href="/support.html" class="btn-secondary">🆘 Go to Support &amp; Troubleshooting →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        Built by
+        <a href="https://github.com/buildbyravi" target="_blank" rel="noopener">buildbyravi</a>
+        &amp;
+        <a href="https://github.com/CryptoExplor" target="_blank" rel="noopener">CryptoExplor</a>
+      </p>
+      <p class="trademark">Google Sheets™ and Google Workspace™ are trademarks of Google LLC. This project is not affiliated with or endorsed by Google.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/analytics.js"></script>
+</body>
+</html>
